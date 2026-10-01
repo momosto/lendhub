@@ -60,6 +60,7 @@ Developing without Docker for the app: `docker compose up -d postgres`, then `./
 | Testing | [docs/05-test-strategy.md](docs/05-test-strategy.md) |
 | Delivery | [docs/06-delivery-plan.md](docs/06-delivery-plan.md), [CHANGELOG.md](CHANGELOG.md) |
 | Verification | [docs/07-traceability.md](docs/07-traceability.md) — every requirement → code → test, deviations, backlog |
+| Test cases | [docs/09-test-cases.md](docs/09-test-cases.md): every test case with its requirement, expected result and last result |
 | Operations | [docs/08-operations.md](docs/08-operations.md) — EOD failures, payments, outbox, data-protection requests |
 
 ## Repo layout
