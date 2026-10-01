@@ -1,0 +1,109 @@
+spring:
+  application:
+    name: lendhub-api
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/lendhub}
+    username: ${DATABASE_USERNAME:lendhub}
+    password: ${DATABASE_PASSWORD:lendhub}
+    hikari:
+      maximum-pool-size: ${DATABASE_POOL_SIZE:10}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc.time_zone: UTC
+        jdbc.batch_size: 50
+        order_inserts: true
+      org.hibernate.envers:
+        default_schema: audit
+        store_data_at_delete: true
+  flyway:
+    schemas: public
+    locations: classpath:db/migration
+  batch:
+    job:
+      enabled: false          # EOD is launched by EodService, never at startup
+    jdbc:
+      initialize-schema: always
+  rabbitmq:
+    addresses: ${RABBITMQ_URL:amqp://guest:guest@localhost:5672}
+  modulith:
+    events:
+      republish-outstanding-events-on-restart: true
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
+  servlet:
+    multipart:
+      max-file-size: 5MB
+
+server:
+  port: ${PORT:8080}
+  forward-headers-strategy: framework
+  error:
+    include-message: always
+
+management:
+  endpoints.web.exposure.include: health,info,prometheus
+  endpoint.health:
+    probes.enabled: true
+    show-details: never
+  health:
+    rabbit.enabled: ${LENDHUB_AMQP_ENABLED:false}
+  tracing:
+    sampling.probability: ${OTEL_SAMPLING:1.0}
+  otlp:
+    tracing:
+      endpoint: ${OTEL_EXPORTER_OTLP_TRACES_ENDPOINT:http://localhost:4318/v1/traces}
+    metrics:
+      export:
+        enabled: false
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+lendhub:
+  security:
+    jwt-secret: ${JWT_SECRET:dev-only-lendhub-jwt-secret-change-me-32+chars}
+    token-ttl-minutes: 480
+    cors-origins: ${CORS_ORIGINS:http://localhost:4200}
+  crypto:
+    # 32 bytes, base64. Dev default only; production reads it from a SOPS-encrypted k8s Secret.
+    key: ${FIELD_ENCRYPTION_KEY:ZGV2LW9ubHktbGVuZGh1Yi1maWVsZC1rZXktMzJieXQ=}
+  fx:
+    zwg-per-usd: 26.80
+    source: "Illustrative demo rate (not an RBZ interbank rate)"
+    rate-date: 2026-10-01
+  approval:
+    manager-limit-usd: 1000
+  demo:
+    expose-otp: ${DEMO_EXPOSE_OTP:true}
+  eod:
+    schedule-enabled: ${EOD_SCHEDULE_ENABLED:false}
+  provisioning:
+    pd-stage1: 0.02
+    pd-stage2: 0.25
+    pd-stage3: 1.00
+    lgd: 0.45
+  integration:
+    insurehub-base-url: ${INSUREHUB_BASE_URL:}
+    insurehub-api-key: ${INSUREHUB_API_KEY:}
+    payments-base-url: ${PAYMENTS_BASE_URL:}
+    payments-api-key: ${PAYMENTS_API_KEY:}
+    callback-secret: ${PAYMENTS_CALLBACK_SECRET:dev-insurehub-callback-secret}
+    callback-url: ${PAYMENTS_CALLBACK_URL:}
+    amqp-enabled: ${LENDHUB_AMQP_ENABLED:false}
+    exchange: insurehub.events
+
+logging:
+  level:
+    org.springframework.modulith: WARN
