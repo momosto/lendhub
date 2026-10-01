@@ -2,6 +2,11 @@
 
 All notable changes to LendHub. Format: [Keep a Changelog](https://keepachangelog.com/), versions follow SemVer.
 
+## 0.1.1 (2026-10-01)
+
+### Security
+- Spring Boot 3.3.4 → 3.5.16 and Spring Modulith 1.2.4 → 1.4.13. The CI Trivy gate found 9 fixable vulnerabilities in the API image (7 in embedded Tomcat 10.1.30, including critical CVE-2025-24813, and 2 in Spring Security 6.3.3). All 77 API tests pass on the new versions.
+
 ## [0.1.0] — 2026-10-01
 
 ### Added

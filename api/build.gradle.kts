@@ -1,8 +1,8 @@
 plugins {
     java
     jacoco
-    id("org.springframework.boot") version "3.3.4"
-    id("io.spring.dependency-management") version "1.1.6"
+    id("org.springframework.boot") version "3.5.16"
+    id("io.spring.dependency-management") version "1.1.7"
     id("com.google.cloud.tools.jib") version "3.4.3"
     id("info.solidsoft.pitest") version "1.15.0"
 }
@@ -16,7 +16,7 @@ java {
 
 repositories { mavenCentral() }
 
-extra["springModulithVersion"] = "1.2.4"
+extra["springModulithVersion"] = "1.4.13"
 
 dependencyManagement {
     imports { mavenBom("org.springframework.modulith:spring-modulith-bom:${property("springModulithVersion")}") }
