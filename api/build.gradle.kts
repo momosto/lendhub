@@ -17,6 +17,8 @@ java {
 repositories { mavenCentral() }
 
 extra["springModulithVersion"] = "1.4.13"
+// Boot 3.5.16 ships Tomcat 10.1.55; 10.1.58+ fixes CVE-2026-65182, -65905, -68525 (found by the CI Trivy gate)
+extra["tomcat.version"] = "10.1.60"
 
 dependencyManagement {
     imports { mavenBom("org.springframework.modulith:spring-modulith-bom:${property("springModulithVersion")}") }
