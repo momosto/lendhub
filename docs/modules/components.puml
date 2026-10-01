@@ -1,0 +1,66 @@
+@startuml
+set separator none
+title LendHubApplication
+
+top to bottom direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+!include <C4/C4_Component>
+
+Container_Boundary("LendHubApplication.LendHubApplication_boundary", "LendHubApplication", $tags="") {
+  Component(LendHubApplication.LendHubApplication.Origination, "Origination", $techn="Module", $descr="", $tags="", $link="")
+  Component(LendHubApplication.LendHubApplication.Integration, "Integration", $techn="Module", $descr="", $tags="", $link="")
+  Component(LendHubApplication.LendHubApplication.Provisioning, "Provisioning", $techn="Module", $descr="", $tags="", $link="")
+  Component(LendHubApplication.LendHubApplication.Eod, "Eod", $techn="Module", $descr="", $tags="", $link="")
+  Component(LendHubApplication.LendHubApplication.Reporting, "Reporting", $techn="Module", $descr="", $tags="", $link="")
+  Component(LendHubApplication.LendHubApplication.Repayments, "Repayments", $techn="Module", $descr="", $tags="", $link="")
+  Component(LendHubApplication.LendHubApplication.Ledger, "Ledger", $techn="Module", $descr="", $tags="", $link="")
+  Component(LendHubApplication.LendHubApplication.Shared, "Shared", $techn="Module", $descr="", $tags="", $link="")
+  Component(LendHubApplication.LendHubApplication.Scoring, "Scoring", $techn="Module", $descr="", $tags="", $link="")
+  Component(LendHubApplication.LendHubApplication.Borrowers, "Borrowers", $techn="Module", $descr="", $tags="", $link="")
+  Component(LendHubApplication.LendHubApplication.Loans, "Loans", $techn="Module", $descr="", $tags="", $link="")
+  Component(LendHubApplication.LendHubApplication.Products, "Products", $techn="Module", $descr="", $tags="", $link="")
+  Component(LendHubApplication.LendHubApplication.Collections, "Collections", $techn="Module", $descr="", $tags="", $link="")
+}
+
+Rel(LendHubApplication.LendHubApplication.Origination, LendHubApplication.LendHubApplication.Borrowers, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Origination, LendHubApplication.LendHubApplication.Products, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Origination, LendHubApplication.LendHubApplication.Scoring, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Origination, LendHubApplication.LendHubApplication.Shared, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Repayments, LendHubApplication.LendHubApplication.Loans, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Repayments, LendHubApplication.LendHubApplication.Borrowers, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Repayments, LendHubApplication.LendHubApplication.Shared, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Integration, LendHubApplication.LendHubApplication.Loans, "listens to", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Integration, LendHubApplication.LendHubApplication.Shared, "depends on", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Integration, LendHubApplication.LendHubApplication.Scoring, "depends on", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Integration, LendHubApplication.LendHubApplication.Repayments, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Provisioning, LendHubApplication.LendHubApplication.Shared, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Provisioning, LendHubApplication.LendHubApplication.Loans, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Borrowers, LendHubApplication.LendHubApplication.Shared, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Loans, LendHubApplication.LendHubApplication.Origination, "listens to", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Loans, LendHubApplication.LendHubApplication.Scoring, "depends on", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Loans, LendHubApplication.LendHubApplication.Shared, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Loans, LendHubApplication.LendHubApplication.Products, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Products, LendHubApplication.LendHubApplication.Shared, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Ledger, LendHubApplication.LendHubApplication.Loans, "listens to", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Ledger, LendHubApplication.LendHubApplication.Provisioning, "listens to", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Ledger, LendHubApplication.LendHubApplication.Repayments, "listens to", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Ledger, LendHubApplication.LendHubApplication.Shared, "depends on", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Reporting, LendHubApplication.LendHubApplication.Loans, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Reporting, LendHubApplication.LendHubApplication.Repayments, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Reporting, LendHubApplication.LendHubApplication.Provisioning, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Reporting, LendHubApplication.LendHubApplication.Shared, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Reporting, LendHubApplication.LendHubApplication.Ledger, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Eod, LendHubApplication.LendHubApplication.Shared, "depends on", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Eod, LendHubApplication.LendHubApplication.Loans, "depends on", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Eod, LendHubApplication.LendHubApplication.Collections, "depends on", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Eod, LendHubApplication.LendHubApplication.Origination, "depends on", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Eod, LendHubApplication.LendHubApplication.Ledger, "depends on", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Eod, LendHubApplication.LendHubApplication.Provisioning, "depends on", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Collections, LendHubApplication.LendHubApplication.Loans, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Collections, LendHubApplication.LendHubApplication.Repayments, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Collections, LendHubApplication.LendHubApplication.Shared, "uses", $techn="", $tags="", $link="")
+
+SHOW_LEGEND(true)
+@enduml

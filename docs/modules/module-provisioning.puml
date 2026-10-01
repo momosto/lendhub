@@ -1,0 +1,22 @@
+@startuml
+set separator none
+title Provisioning
+
+top to bottom direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+!include <C4/C4_Component>
+
+Container_Boundary("LendHubApplication.LendHubApplication_boundary", "LendHubApplication", $tags="") {
+  Component(LendHubApplication.LendHubApplication.Provisioning, "Provisioning", $techn="Module", $descr="", $tags="", $link="")
+  Component(LendHubApplication.LendHubApplication.Shared, "Shared", $techn="Module", $descr="", $tags="", $link="")
+  Component(LendHubApplication.LendHubApplication.Loans, "Loans", $techn="Module", $descr="", $tags="", $link="")
+}
+
+Rel(LendHubApplication.LendHubApplication.Provisioning, LendHubApplication.LendHubApplication.Shared, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Provisioning, LendHubApplication.LendHubApplication.Loans, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Loans, LendHubApplication.LendHubApplication.Shared, "uses", $techn="", $tags="", $link="")
+
+SHOW_LEGEND(true)
+@enduml

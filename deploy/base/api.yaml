@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lendhub-api
+  labels: { app.kubernetes.io/name: lendhub-api, app.kubernetes.io/part-of: insurehub }
+spec:
+  replicas: 1                     # one replica: the EOD scheduler and Spring Batch job repository assume a single runner
+  strategy: { type: Recreate }
+  selector:
+    matchLabels: { app.kubernetes.io/name: lendhub-api }
+  template:
+    metadata:
+      labels: { app.kubernetes.io/name: lendhub-api, app.kubernetes.io/part-of: insurehub }
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile: { type: RuntimeDefault }
+      containers:
+        - name: api
+          image: ghcr.io/momosto/lendhub-api:latest
+          ports: [{ name: http, containerPort: 8080 }]
+          envFrom:
+            - configMapRef: { name: lendhub-config }
+            - secretRef: { name: lendhub-secrets }      # SOPS-encrypted in insurehub-platform
+          resources:
+            requests: { cpu: 100m, memory: 512Mi }
+            limits: { memory: 768Mi }
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: { drop: [ALL] }
+          volumeMounts: [{ name: tmp, mountPath: /tmp }]
+          startupProbe:
+            httpGet: { path: /actuator/health/liveness, port: http }
+            periodSeconds: 5
+            failureThreshold: 36
+          livenessProbe:
+            httpGet: { path: /actuator/health/liveness, port: http }
+            periodSeconds: 20
+          readinessProbe:
+            httpGet: { path: /actuator/health/readiness, port: http }
+            periodSeconds: 10
+      volumes: [{ name: tmp, emptyDir: {} }]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lendhub-api
+  labels: { app.kubernetes.io/name: lendhub-api }
+spec:
+  selector: { app.kubernetes.io/name: lendhub-api }
+  ports: [{ name: http, port: 80, targetPort: http }]
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: lendhub-config
+data:
+  DATABASE_URL: jdbc:postgresql://postgres.data.svc.cluster.local:5432/lendhub
+  RABBITMQ_URL: amqp://rabbitmq.data.svc.cluster.local:5672
+  LENDHUB_AMQP_ENABLED: "true"
+  EOD_SCHEDULE_ENABLED: "true"
+  DEMO_EXPOSE_OTP: "true"
+  OTEL_ENABLED: "true"
+  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://otel-collector.observability.svc.cluster.local:4318/v1/traces
+  INSUREHUB_BASE_URL: ""
+  PAYMENTS_BASE_URL: http://payments-api.integrations.svc.cluster.local
+  PAYMENTS_CALLBACK_URL: http://lendhub-api.lendhub.svc.cluster.local/api/v1/integrations/payments

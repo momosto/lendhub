@@ -1,0 +1,27 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# Demo environment on the k3s node (insurehub-platform). ArgoCD's image updater / CI bumps the tags below.
+resources:
+  - ../../base
+images:
+  - name: ghcr.io/momosto/lendhub-api
+    newTag: latest
+  - name: ghcr.io/momosto/lendhub-web
+    newTag: latest
+patches:
+  - target: { kind: Ingress, name: lendhub }
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: lendhub.insurehub.duckdns.org
+      - op: replace
+        path: /spec/rules/1/host
+        value: lendhub-api.insurehub.duckdns.org
+      - op: replace
+        path: /spec/tls/0/hosts
+        value: [lendhub.insurehub.duckdns.org, lendhub-api.insurehub.duckdns.org]
+  - target: { kind: Deployment, name: lendhub-web }
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/env/0/value
+        value: https://lendhub-api.insurehub.duckdns.org

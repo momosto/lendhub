@@ -1,0 +1,17 @@
+@startuml
+set separator none
+title Scoring
+
+top to bottom direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+!include <C4/C4_Component>
+
+Container_Boundary("LendHubApplication.LendHubApplication_boundary", "LendHubApplication", $tags="") {
+  Component(LendHubApplication.LendHubApplication.Scoring, "Scoring", $techn="Module", $descr="", $tags="", $link="")
+}
+
+
+SHOW_LEGEND(true)
+@enduml

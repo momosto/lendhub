@@ -57,6 +57,7 @@ management:
   health:
     rabbit.enabled: ${LENDHUB_AMQP_ENABLED:false}
   tracing:
+    enabled: ${OTEL_ENABLED:false}
     sampling.probability: ${OTEL_SAMPLING:1.0}
   otlp:
     tracing:

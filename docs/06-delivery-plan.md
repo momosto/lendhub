@@ -54,3 +54,7 @@ Tests green incl. properties · docs updated (requirements traceability ID in PR
 5. (1:05) Customer repays via EcoCash simulator → allocation waterfall.
 6. (1:20) Run EOD 45 days later → PAR 30, collections task, IFRS 9 Stage 2, provision journal.
 7. (1:45) Architecture slide: Modulith modules, outbox, Spring Batch, tests (properties), live link.
+
+## Outcome (2026-10-01)
+
+M1–M4 scope was delivered in one build as v0.1.0, except the items listed in [07-traceability.md §4](07-traceability.md#4-known-limitations-v11-backlog) (PDF statement, 1M-row benchmark, Playwright, live deploy). Deployment manifests are ready; the live URL follows platform phase 1.

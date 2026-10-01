@@ -1,0 +1,25 @@
+@startuml
+set separator none
+title Repayments
+
+top to bottom direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+!include <C4/C4_Component>
+
+Container_Boundary("LendHubApplication.LendHubApplication_boundary", "LendHubApplication", $tags="") {
+  Component(LendHubApplication.LendHubApplication.Repayments, "Repayments", $techn="Module", $descr="", $tags="", $link="")
+  Component(LendHubApplication.LendHubApplication.Shared, "Shared", $techn="Module", $descr="", $tags="", $link="")
+  Component(LendHubApplication.LendHubApplication.Borrowers, "Borrowers", $techn="Module", $descr="", $tags="", $link="")
+  Component(LendHubApplication.LendHubApplication.Loans, "Loans", $techn="Module", $descr="", $tags="", $link="")
+}
+
+Rel(LendHubApplication.LendHubApplication.Repayments, LendHubApplication.LendHubApplication.Loans, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Repayments, LendHubApplication.LendHubApplication.Borrowers, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Repayments, LendHubApplication.LendHubApplication.Shared, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Borrowers, LendHubApplication.LendHubApplication.Shared, "uses", $techn="", $tags="", $link="")
+Rel(LendHubApplication.LendHubApplication.Loans, LendHubApplication.LendHubApplication.Shared, "uses", $techn="", $tags="", $link="")
+
+SHOW_LEGEND(true)
+@enduml
